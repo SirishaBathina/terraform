@@ -1,5 +1,5 @@
 provider "aws" {
-  region = "us-west-2"  # Specify your desired AWS region
+  region = "ap-south-1"  # Specify your desired AWS region
 }
 
 resource "aws_instance" "my_ec2" {
@@ -8,6 +8,6 @@ resource "aws_instance" "my_ec2" {
   instance_type = "t2.micro"  # Replace with your desired instance type
 
   tags = {
-    Name = "Terraform-EC2-Instance-${count.index + 1}"
+    Name = "Dev-${count.index + 1}"
   }
   }
