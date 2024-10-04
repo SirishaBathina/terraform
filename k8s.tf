@@ -1,3 +1,22 @@
+provider "google" {
+  credentials      = file("~/.siri.json")
+  project          = "purplegrid"
+  region           = "us-central1"
+  zone             = "us-central1-c"
+}
+
+provider "google-beta" {
+  credentials      = file("~/.siri.json")
+  project          = "purplegrid"
+  region           = "us-central1"
+  zone             = "us-central1-c"
+}
+
+provider "kubernetes" {
+  config_path = "~/.kube/config"
+}
+
+*******************************************************************
 data "google_container_cluster" "gke_cluster" {
   name     = "app9-b"
   location = "us-central1-c"
