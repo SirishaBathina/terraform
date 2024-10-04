@@ -1,13 +1,13 @@
 provider "google" {
   credentials      = file("~/.siri.json")
-  project          = "purplegrid"
+  project          = "projectname"
   region           = "us-central1"
   zone             = "us-central1-c"
 }
 
 provider "google-beta" {
   credentials      = file("~/.siri.json")
-  project          = "purplegrid"
+  project          = "pj-name"
   region           = "us-central1"
   zone             = "us-central1-c"
 }
@@ -18,7 +18,7 @@ provider "kubernetes" {
 
 *******************************************************************
 data "google_container_cluster" "gke_cluster" {
-  name     = "app9-b"
+  name     = "test"
   location = "us-central1-c"
 }
 
@@ -28,15 +28,15 @@ resource "kubernetes_namespace" "api" {
   }
 }
 
-resource "kubernetes_config_map" "analytics-config" {
+resource "kubernetes_config_map" "siri-config" {
   metadata {
-    name      = "analytics-config"
+    name      = "siri-config"
     namespace = "api"
   }
 
   data = {
     # Define your config key-value pairs here
-    "SPRING_PROFILES_ACTIVE" = "app9-b"
+    "SPRING_PROFILES_ACTIVE" = "test"
   }
 }
 
@@ -65,7 +65,7 @@ resource "kubernetes_deployment" "analytics" {
       spec {
         container {
           name  = "analytics"
-          image = "gcr.io/purplegrid/analytics:app9-b"
+          image = "gcr.io/pj-name/siiri:test"
 
           port {
             container_port = 80
@@ -76,7 +76,7 @@ resource "kubernetes_deployment" "analytics" {
             name = "SPRING_PROFILES_ACTIVE"
             value_from {
               config_map_key_ref {
-                name = "analytics-config"
+                name = "test-config"
                 key  = "SPRING_PROFILES_ACTIVE"
               }
             }
@@ -87,15 +87,15 @@ resource "kubernetes_deployment" "analytics" {
   }
 }
 
-resource "kubernetes_service" "analytics-service" {
+resource "kubernetes_service" "test-service" {
   metadata {
-    name      = "analytics-service"
+    name      = "test-service"
     namespace = "api"
   }
 
   spec {
     selector = {
-      app = "analytics"
+      app = "test"
     }
 
     port {
